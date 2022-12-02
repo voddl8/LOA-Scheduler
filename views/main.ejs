@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOASchedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="/public/main.css" rel="stylesheet">
+<body>
+    <nav class="navbar sticky-top" style="background-color: #182e3d;">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white" href="/">
+            <img src="../public/images/LostArk_icon.png" alt="Logo" width="40" class="d-inline-block align-text-top">
+            LOA Scheduler
+          </a>
+          <form class="d-flex" role="logout">
+            <a href="/logout">
+              <button class="btn btn-outline-success" type="button">Logout</button>
+            </a>
+          </form>
+        </div>
+    </nav>
+
+    <p class="mt-2 ms-3"><%=사용자.id %>의 페이지 </p>
+    
+
+    <!-- 스케쥴 체크 부분 -->
+    <div>
+      <form action="/main" method="post">
+        <table class="table table-hover" id="Schedule">
+          <thead>
+            <tr>
+              <th scope="col">캐릭터 명</th>      <!-- 열 -->
+              <th scope="col">오레하</th>
+              <th scope="col">아르고스</th>
+              <th scope="col">발탄</th>
+              <th scope="col">비아키스</th>
+              <th scope="col">쿠크세이튼</th>
+              <th scope="col">아브렐슈드</th>
+              <th scope="col">일리아칸</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="0">
+              <th scope="row">기공사</th>      <!-- 행 -->
+              <td><input type="checkbox" name="오레하" value="오레하"></td>
+              <td><input type="checkbox" name="아르고스" value="아르고스"></td>
+              <td><input type="checkbox" name="군단장" value="발탄" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="비아키스" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="쿠크세이튼" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>
+            </tr>
+            <tr>
+              <th scope="row"><input type="text" maxlength="12" name="character" value="캐릭터 명"></th>
+              <td><input type="checkbox" name="오레하" value="오레하"></td>
+              <td><input type="checkbox" name="아르고스" value="아르고스"></td>
+              <td><input type="checkbox" name="군단장" value="발탄" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="비아키스" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="쿠크세이튼" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>
+              <td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <div>
+      <form action="/schedule" method="post">
+        <button type="button" value="행추가" onclick="addRow(), trLength()" class="button_plus"></button>   <!-- 버튼 클릭시 1행 추가 -->
+        <div>
+          <button type="submit" class="btn btn-danger mt-2">저장</button>   <!-- 버튼 클릭시 저장-->
+        </div>
+      </form>
+    </div>
+
+    <div id="result">체크박스 갯수 확인</div>
+
+    <script>  // 행 삽입 기능
+      var newRow = HTMLTableElement.insertRow();      // 테이블에 새로운 행 추가
+      var newCell= HTMLTableRowElement.insertCell();  // insertRow()로 생성한 row에 cell을 추가
+      var deleteRow = HTMLTableElement.deleteRow();   // 테이블의 행을 삭제
+
+
+
+      function addRow(){    //행 추가 기능
+
+        const table = document.getElementById('Schedule');  // table element 찾기
+
+        const newRow = table.insertRow();   // 새 행 추가
+        // let idCnt = 0;
+        // for(idCnt; idCnt<table.tBodies[0].rows.length; idCnt++){
+        //   return idCnt;
+        // }
+        // newRow.id = idCnt;
+
+        const newColumn0 = newRow.insertCell(0);  // 열 추가
+        const newColumn1 = newRow.insertCell(1);
+        const newColumn2 = newRow.insertCell(2);
+        const newColumn3 = newRow.insertCell(3);
+        const newColumn4 = newRow.insertCell(4);
+        const newColumn5 = newRow.insertCell(5);
+        const newColumn6 = newRow.insertCell(6);
+        const newColumn7 = newRow.insertCell(7);
+
+        newColumn0.innerHTML = '<th scope="row"><input type="text" maxlength="12" name="character" value="캐릭터 명"></th>';
+        newColumn1.innerHTML = '<td><input type="checkbox" name="오레하" value="오레하"></td>'; 
+        newColumn2.innerHTML = '<td><input type="checkbox" name="아르고스" value="아르고스"></td>';
+        newColumn3.innerHTML = '<td><input type="checkbox" name="군단장" value="발탄" onclick="getCheckedCnt()"></td>';
+        newColumn4.innerHTML = '<td><input type="checkbox" name="군단장" value="비아키스" onclick="getCheckedCnt()"></td>';
+        newColumn5.innerHTML = '<td><input type="checkbox" name="군단장" value="쿠크세이튼" onclick="getCheckedCnt()"></td>';
+        newColumn6.innerHTML = '<td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>';
+        newColumn7.innerHTML = '<td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>';
+
+        
+        // let RowCnt = toString(idCnt); // 행 id를 문자열로 변환
+        // let idCnt = 1;
+        // newRow.setAttribute('id', idCnt);  // 행 id 추가
+        // idCnt++;    
+      }
+
+      function addTrId(counter){       // 행에 id 부여
+        let table = document.getElementById('Schedule');
+        table.setAttribute('id', counter);
+        counter++;
+        
+      }
+
+      // 체크박스 갯수 확인
+      function getCheckedCnt(){
+        const query= 'input[name="군단장"]:checked';
+        const selectedElements = document.querySelectorAll(query);
+
+        const selectedElementsCnt = selectedElements.length;  // 선택된 목록의 갯수 세기
+
+        document.getElementById('result').innerText = selectedElementsCnt;  // 체크박스 갯수 html에 표시
+        console.log(selectedElements);
+        
+        const selectedArray = Array.from(selectedElements); // nodelist를 array로 변환
+        console.log(selectedArray);
+
+        if(selectedElementsCnt > 3){
+          alert('군단장 클리어 횟수는 3회를 넘길 수 없습니다.')
+          console.log(selectedArray[0]);
+          selectedArray[3].checked = false;
+          selectedArray.pop();    // 배열의 마지막 값 빼기
+          console.log(selectedArray);
+        }   
+
+      }
+
+      function trLength(){
+        var trLength = document.getElementById('Schedule');
+        var rowCount = trLength.rows.length -2; // -2 하는 이유는 가장 첫 행 빼고 index 0부터 시작하기 위함
+        console.log("행 index = " + rowCount);
+      }
+      console.log('1행 값')
+      console.log(Schedule.rows[0]);
+      console.log(typeof(Schedule.rows[0]));
+      
+
+    </script>
+
+    
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+      
+</body>
+</html>
