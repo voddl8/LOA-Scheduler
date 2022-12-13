@@ -28,7 +28,7 @@
     <!-- 스케쥴 체크 부분 -->
     <div>
       <form action="/main" method="post">
-        <table class="table table-hover" id="Schedule">
+        <table id="Schedule" class="table table-hover" >
           <thead>
             <tr>
               <th scope="col">캐릭터 명</th>      <!-- 열 -->
@@ -43,17 +43,7 @@
           </thead>
           <tbody>
             <tr id="0">
-              <th scope="row">기공사</th>      <!-- 행 -->
-              <td><input type="checkbox" name="오레하" value="오레하"></td>
-              <td><input type="checkbox" name="아르고스" value="아르고스"></td>
-              <td><input type="checkbox" name="군단장" value="발탄" onclick="getCheckedCnt()"></td>
-              <td><input type="checkbox" name="군단장" value="비아키스" onclick="getCheckedCnt()"></td>
-              <td><input type="checkbox" name="군단장" value="쿠크세이튼" onclick="getCheckedCnt()"></td>
-              <td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>
-              <td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>
-            </tr>
-            <tr>
-              <th scope="row"><input type="text" maxlength="12" name="character" value="캐릭터 명"></th>
+              <th scope="row"><input type="text" maxlength="12" name="character" value="캐릭터 명"></th>      <!-- 행 -->
               <td><input type="checkbox" name="오레하" value="오레하"></td>
               <td><input type="checkbox" name="아르고스" value="아르고스"></td>
               <td><input type="checkbox" name="군단장" value="발탄" onclick="getCheckedCnt()"></td>
@@ -79,18 +69,17 @@
     <div id="result">체크박스 갯수 확인</div>
 
     <script>  // 행 삽입 기능
-      var newRow = HTMLTableElement.insertRow();      // 테이블에 새로운 행 추가
-      var newCell= HTMLTableRowElement.insertCell();  // insertRow()로 생성한 row에 cell을 추가
-      var deleteRow = HTMLTableElement.deleteRow();   // 테이블의 행을 삭제
+      var rowCnt = 0;
 
-
+     // var newRow = HTMLTableElement.insertRow();      // 테이블에 새로운 행 추가
+     // var newCell= HTMLTableRowElement.insertCell();  // insertRow()로 생성한 row에 cell을 추가
+     // var deleteRow = HTMLTableElement.deleteRow();   // 테이블의 행을 삭제      
 
       function addRow(){    //행 추가 기능
 
-        const table = document.getElementById('Schedule');  // table element 찾기
+        const table = document.getElementById("Schedule");  // table element 찾기
 
         const newRow = table.insertRow();   // 새 행 추가
-        // let idCnt = 0;
         // for(idCnt; idCnt<table.tBodies[0].rows.length; idCnt++){
         //   return idCnt;
         // }
@@ -114,23 +103,21 @@
         newColumn6.innerHTML = '<td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>';
         newColumn7.innerHTML = '<td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>';
 
+
         
         // let RowCnt = toString(idCnt); // 행 id를 문자열로 변환
         // let idCnt = 1;
         // newRow.setAttribute('id', idCnt);  // 행 id 추가
         // idCnt++;    
+        rowCnt++;
+        newRow.setAttribute('id', rowCnt);  // 행 id 추가
+        console.log(rowCnt);
       }
 
-      function addTrId(counter){       // 행에 id 부여
-        let table = document.getElementById('Schedule');
-        table.setAttribute('id', counter);
-        counter++;
-        
-      }
 
       // 체크박스 갯수 확인
       function getCheckedCnt(){
-        const query= 'input[name="군단장"]:checked';
+        const query='input[name="군단장"]:checked';
         const selectedElements = document.querySelectorAll(query);
 
         const selectedElementsCnt = selectedElements.length;  // 선택된 목록의 갯수 세기
@@ -156,6 +143,7 @@
         var rowCount = trLength.rows.length -2; // -2 하는 이유는 가장 첫 행 빼고 index 0부터 시작하기 위함
         console.log("행 index = " + rowCount);
       }
+
       console.log('1행 값')
       console.log(Schedule.rows[0]);
       console.log(typeof(Schedule.rows[0]));
@@ -163,12 +151,7 @@
 
     </script>
 
-    
-    
-    
-
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-      
+    
 </body>
 </html>

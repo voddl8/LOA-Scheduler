@@ -65,6 +65,10 @@ passport.deserializeUser(function(user, done){
 })
 */
 
+app.get('/test', function(요청, 응답){
+  응답.render('test.ejs')
+});
+
 app.get('/login', function(요청, 응답){
   응답.render('login.ejs')
 });
