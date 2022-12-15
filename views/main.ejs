@@ -117,7 +117,8 @@
 
       // 체크박스 갯수 확인
       function getCheckedCnt(){
-        const query='input[name="군단장"]:checked';
+        const query='input[name="군단장"]:checked';     // 군단장 체크박스 체크 확인
+        const query2=document.getElementById(rowCnt);   // 행 id 확인
         const selectedElements = document.querySelectorAll(query);
 
         const selectedElementsCnt = selectedElements.length;  // 선택된 목록의 갯수 세기
