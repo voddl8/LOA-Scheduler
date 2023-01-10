@@ -7,6 +7,7 @@
     <title>LOASchedule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link href="/public/main.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <body>
     <nav class="navbar sticky-top" style="background-color: #182e3d;">
         <div class="container-fluid">
@@ -59,7 +60,7 @@
 
     <div>
       <form action="/schedule" method="post">
-        <button type="button" value="행추가" onclick="addRow(), trLength()" class="button_plus"></button>   <!-- 버튼 클릭시 1행 추가 -->
+        <button type="button" value="행추가" onclick="addRow(rowCnt), trLength()" class="button_plus"></button>   <!-- 버튼 클릭시 1행 추가 -->
         <div>
           <button type="submit" class="btn btn-danger mt-2">저장</button>   <!-- 버튼 클릭시 저장-->
         </div>
@@ -69,13 +70,9 @@
     <div id="result">체크박스 갯수 확인</div>
 
     <script>  // 행 삽입 기능
-      var rowCnt = 0;
+      var rowCnt = 0;   // tr id 변수    
 
-     // var newRow = HTMLTableElement.insertRow();      // 테이블에 새로운 행 추가
-     // var newCell= HTMLTableRowElement.insertCell();  // insertRow()로 생성한 row에 cell을 추가
-     // var deleteRow = HTMLTableElement.deleteRow();   // 테이블의 행을 삭제      
-
-      function addRow(){    //행 추가 기능
+      function addRow(rowCnt){    //행 추가 기능
 
         const table = document.getElementById("Schedule");  // table element 찾기
 
@@ -102,24 +99,20 @@
         newColumn5.innerHTML = '<td><input type="checkbox" name="군단장" value="쿠크세이튼" onclick="getCheckedCnt()"></td>';
         newColumn6.innerHTML = '<td><input type="checkbox" name="군단장" value="아브렐슈드" onclick="getCheckedCnt()"></td>';
         newColumn7.innerHTML = '<td><input type="checkbox" name="군단장" value="일리아칸" onclick="getCheckedCnt()"></td>';
-
-
-        
-        // let RowCnt = toString(idCnt); // 행 id를 문자열로 변환
-        // let idCnt = 1;
-        // newRow.setAttribute('id', idCnt);  // 행 id 추가
-        // idCnt++;    
+ 
         rowCnt++;
         newRow.setAttribute('id', rowCnt);  // 행 id 추가
         console.log(rowCnt);
       }
 
 
-      // 체크박스 갯수 확인
-      function getCheckedCnt(){
-        const query='input[name="군단장"]:checked';     // 군단장 체크박스 체크 확인
-        const query2=document.getElementById(rowCnt);   // 행 id 확인
-        const selectedElements = document.querySelectorAll(query);
+      // 체크박스 갯수 확인, 행 기준으로 군단장이 4개이상 선택 불가해야함
+      function getCheckedCnt(rowCnt){
+
+        let tablerow = document.getElementById(rowCnt);   // row id 셀렉트
+        const query='input[name="군단장"]:checked';     
+        // const query2=document.getElementById(rowCnt);   // 행 id 확인
+        const selectedElements = document.querySelectorAll(query);    // 군단장 체크박스 체크 확인
 
         const selectedElementsCnt = selectedElements.length;  // 선택된 목록의 갯수 세기
 
@@ -127,27 +120,55 @@
         console.log(selectedElements);
         
         const selectedArray = Array.from(selectedElements); // nodelist를 array로 변환
-        console.log(selectedArray);
+   
+
+        for(i=0; i<selectedArray.length; i++){
+          console.log(selectedArray[i].value);
+        }
 
         if(selectedElementsCnt > 3){
           alert('군단장 클리어 횟수는 3회를 넘길 수 없습니다.')
-          console.log(selectedArray[0]);
+          console.log(selectedArray[0].value);
           selectedArray[3].checked = false;
           selectedArray.pop();    // 배열의 마지막 값 빼기
           console.log(selectedArray);
         }   
+
+        event.stopPropagation();
 
       }
 
       function trLength(){
         var trLength = document.getElementById('Schedule');
         var rowCount = trLength.rows.length -2; // -2 하는 이유는 가장 첫 행 빼고 index 0부터 시작하기 위함
-        console.log("행 index = " + rowCount);
+        console.log("행 index (마지막 tr id) = " + rowCount);
       }
 
-      console.log('1행 값')
-      console.log(Schedule.rows[0]);
-      console.log(typeof(Schedule.rows[0]));
+      // 행 클릭시 행 값 출력 함수
+      function rowClick(){
+        let table = document.getElementById('Schedule')
+        let rowList = table.rows;
+
+        for(i=1; i<rowList.length; i++){
+          let row = rowList[i];
+          let str = "";
+
+          row.onclick = function(){
+            return function(){
+              let characterName = this.cells[0].innerHTML;  // 직업 이름
+
+              str = "직업 : " + characterName + " ";
+              document.querySelectorAll('.check').innerHTML = str;
+            };
+          }(row)
+        }
+
+      }
+
+      window.onload = rowClick();     // window.onload는 해당 함수 내의 스크립트 코드가 웹 브라우저 내의 모든 요소가 준비되고 난 후 실행될 수 있도록 하는 함수
+
+      // console.log('1행 값')
+      // console.log(Schedule.rows[0]);  // 오브젝트
       
 
     </script>
