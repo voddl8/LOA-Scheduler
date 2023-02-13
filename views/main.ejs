@@ -70,11 +70,10 @@
       let userData = uData[0];
       console.log(userData.schedule);      
 
-      // userData.schedule.charName.length) = 표현해야 하는 행 수
-
       // 행 삽입 기능
       let rowCnt = 0;   // tr class 변수    
-      let showRowTable = userData.schedule.charName.length; // 표현해야 하는 행 수
+      let showRowTable = userData.schedule.charName.length -1; // 표현해야 하는 행 수
+
       function addRow(){    //행 추가 기능
         
         const table = document.getElementById("Schedule");  // table element 찾기
@@ -94,24 +93,21 @@
         
       }
 
-      function addRow2(showRowTable){
+      // 유저 정보 서버에서 가져와서 테이블 만들기
+      function firstLoading(obj){
         const table = document.getElementById("Schedule");  // table element 찾기
-        const newRow = table.insertRow();   // 새 행 추가
-        
-
-        for(i=0; i<showRowTable ; i++){
+    
+        for(i=0; i<obj ; i++){
+          const newRow = table.insertRow();   // 새 행 추가
           rowCnt++;
-        
           newRow.setAttribute('id', 'character'+rowCnt);
           newRow.setAttribute('class', 'Character'+rowCnt);  // 행 class 추가 , querySelector 사용하기 위해 최소한의 문자 한개가 필요
           newRow.setAttribute('onclick', 'getCheckedCnt(this)');  // 행 클릭시 함수
 
           const newColumn0 = newRow.insertCell(0);  // 열 추가
-
           newColumn0.innerHTML = '<th scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></th>';
           rowTest(rowCnt);
         }
-        
       }
  
       // 테이블에 변수 요인 넣기 (rowCnt)
@@ -171,6 +167,7 @@
       window.onload = function() {
         rowClick();
         rowTest();
+        firstLoading(showRowTable);
       };
 
       // 유저 데이터 저장
@@ -206,17 +203,6 @@
         
       }
 
-      // 유저 정보 받아서 스케줄 표에 뿌리기
-      function insertData(){
-        // 1. 몇행인지 파악 후 행 갯수 늘리기, 행갯수 정보는 charName의 배열 갯수
-        let charRowCnt = 0;
-        for(i=0; userData.schedule.length; i++){
-          charRowCnt++;
-        }
-        //addRow(charRowCnt);
-        
-        // 2. 행 갯수 늘렸으면 체크박스 id나 name을 찾아 체크 표시 해주기
-      }
 
     </script>
 
