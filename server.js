@@ -3,6 +3,7 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
 app.use('/public', express.static('public'));       // 정적파일 설정
 
@@ -20,7 +21,7 @@ MongoClient.connect('mongodb+srv://admin:admin@cluster0.64sx3yx.mongodb.net/test
     });
   })
 
-//회원 가입기능
+//회원 기능
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
@@ -85,13 +86,15 @@ app.get('/logout', function(요청, 응답){
 app.get('/register', function(요청, 응답){
   응답.render('register.ejs')
 });
+
+// 회원가입 기능
 app.post('/register', function(요청, 응답){
   
   db.collection('login').findOne({id: 요청.body.id}, function(에러, 결과){
     console.log(결과)
     console.log(에러)
     if(결과 == null) {
-      db.collection('login').insertOne({id: 요청.body.id, pw: 요청.body.pw, role: "member"}, function(에러, 결과){
+      db.collection('login').insertOne({id: 요청.body.id, pw: 요청.body.pw, role: "member", schedule: {}}, function(에러, 결과){
         console.log(결과)
         })
     }
@@ -115,8 +118,16 @@ app.get('/dbtest', function(요청, 응답){
   });
 
 app.get('/main', 로그인했니, function(요청, 응답){
-    console.log(요청.user)
-    응답.render('main.ejs', { 사용자 : 요청.user})
+    console.log("요청.user : " + JSON.stringify(요청.user.id));
+    db.collection('login').find({id: 요청.user.id }).project({_id:0, id:1, role:1, schedule:1}).toArray(function(에러,결과){
+      console.log("받은 userData : " + 결과 + typeof(결과) );
+      console.log("보내는 userData : " + JSON.stringify(결과));
+      응답.render('main.ejs', { 
+        사용자 : 요청.user, 
+        userData : JSON.stringify(결과)
+      })
+    })
+    
 });
 
 function 로그인했니(요청, 응답, next){
@@ -130,23 +141,17 @@ function 로그인했니(요청, 응답, next){
 
 // 스케줄러 기능
 
-app.get('/sheduler', function(요청, 응답){
-  응답.render('schedueler.ejs')
+app.post('/main', function(요청,응답){
+  응답.redirect('/main')
+  let data = 요청.body;
+  console.log(data);
+  //console.log("사용자 id 데이터 : " + 요청.user.id);
+  db.collection('login').updateOne({id: 요청.user.id}, { $set : {schedule : data}}, function(에러, 결과){
+     
+  })
+
+  //응답.render('/main', {보낼데이터변수이름 : 데이터})
 });
-
-app.post('/scheduler', function(요청,응답){
-
-});
-
-
-
-
-
-
-
-
-
-
 
 
 
