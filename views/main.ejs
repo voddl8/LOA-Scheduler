@@ -94,9 +94,12 @@
       }
 
       // 유저 정보 서버에서 가져와서 테이블 만들기
-      let showRowTable = userData.schedule.charName.length -1; // 표현해야 하는 행 수
-      let dbCharName = userData.schedule.charName;              // 유저 캐릭 정보
-      function firstLoading(obj){
+      function firstLoading(){
+        if(userData.schedule == undefined) return;
+
+        let showRowTable = userData.schedule.charName.length -1; // 표현해야 하는 행 수
+        let dbCharName = userData.schedule.charName;              // 유저 캐릭 정보
+        
         const table = document.getElementById("Schedule");  // table element 찾기
         let p1 = document.querySelector("#character0");
         if(dbCharName[0] != null){
@@ -104,7 +107,7 @@
         }
         
         //1. 행 생성 후 캐릭 이름 넣어주기
-        for(i=1; i<obj+1; i++){
+        for(i=1; i<showRowTable+1; i++){
           const newRow = table.insertRow();   // 새 행 추가
           rowCnt++;
           newRow.setAttribute('id', 'character'+rowCnt);
@@ -117,7 +120,7 @@
           rowTest(rowCnt);
         }
         
-        //2. 체크된 체크박스 확인
+        //2. 체크된 체크박스 확인 후 체크
         let chked = userData.schedule.id;
         console.log(chked[0].substr(0));
         console.log(document.querySelector("#"+chked[0].substr(0)));
@@ -125,10 +128,6 @@
         for(i=0; i<chked.length; i++){
           document.querySelector("#" + chked[i].substr(0)).checked = true;
         }
-        
-        
-        
-        //3. 체크박스 체크 넣어주기
 
       }
  
@@ -191,7 +190,7 @@
       window.onload = function() {
         rowClick();
         rowTest();
-        firstLoading(showRowTable);
+        firstLoading();
       };
 
       // 유저 데이터 저장
