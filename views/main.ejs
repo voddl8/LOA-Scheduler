@@ -119,10 +119,15 @@
         
         //2. 체크된 체크박스 확인
         let chked = userData.schedule.id;
-        console.log(chked);
-        for(i=0; i<obj+1; i++){
-          
+        console.log(chked[0].substr(0));
+        console.log(document.querySelector("#"+chked[0].substr(0)));
+        //document.querySelector("#"+chked[0].substr(0)).checked = true;
+        for(i=0; i<chked.length; i++){
+          document.querySelector("#" + chked[i].substr(0)).checked = true;
         }
+        
+        
+        
         //3. 체크박스 체크 넣어주기
 
       }
