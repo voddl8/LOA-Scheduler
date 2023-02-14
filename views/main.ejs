@@ -36,6 +36,8 @@
               <th scope="col">캐릭터 명</th>      <!-- 열 -->
               <th scope="col">오레하</th>
               <th scope="col">아르고스</th>
+              <th scope="col">카양겔</th>
+              <th scope="col">볼다이크</th>
               <th scope="col">발탄</th>
               <th scope="col">비아키스</th>
               <th scope="col">쿠크세이튼</th>
@@ -44,8 +46,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr id="character0" class="character0">
-              <th scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></th>
+            <tr id="character0" class="character0" onclick="getCheckedCnt(this)">
+              <td scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></td>
             </tr>
           </tbody>
         </table>
@@ -72,8 +74,6 @@
 
       // 행 삽입 기능
       let rowCnt = 0;   // tr class 변수    
-      let showRowTable = userData.schedule.charName.length -1; // 표현해야 하는 행 수
-
       function addRow(){    //행 추가 기능
         
         const table = document.getElementById("Schedule");  // table element 찾기
@@ -88,32 +88,51 @@
 
         const newColumn0 = newRow.insertCell(0);  // 열 추가
 
-        newColumn0.innerHTML = '<th scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></th>';
+        newColumn0.innerHTML = '<td scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></td>';
         rowTest(rowCnt);
         
       }
 
       // 유저 정보 서버에서 가져와서 테이블 만들기
+      let showRowTable = userData.schedule.charName.length -1; // 표현해야 하는 행 수
+      let dbCharName = userData.schedule.charName;              // 유저 캐릭 정보
       function firstLoading(obj){
         const table = document.getElementById("Schedule");  // table element 찾기
-    
-        for(i=0; i<obj ; i++){
+        let p1 = document.querySelector("#character0");
+        if(dbCharName[0] != null){
+          p1.querySelector("input[name = 'charName']").setAttribute('value', dbCharName[0]);
+        }
+        
+        //1. 행 생성 후 캐릭 이름 넣어주기
+        for(i=1; i<obj+1; i++){
           const newRow = table.insertRow();   // 새 행 추가
           rowCnt++;
           newRow.setAttribute('id', 'character'+rowCnt);
           newRow.setAttribute('class', 'Character'+rowCnt);  // 행 class 추가 , querySelector 사용하기 위해 최소한의 문자 한개가 필요
           newRow.setAttribute('onclick', 'getCheckedCnt(this)');  // 행 클릭시 함수
-
           const newColumn0 = newRow.insertCell(0);  // 열 추가
-          newColumn0.innerHTML = '<th scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력"></th>';
+          newColumn0.innerHTML = '<td scope="row"><input type="text" maxlength="12" name="charName" placeholder="캐릭터 명 입력" ></td>';
+          let parent = document.querySelector("#character"+i);
+          parent.querySelector("input[name = 'charName']").setAttribute('value', dbCharName[i]);
           rowTest(rowCnt);
         }
+        
+        //2. 체크된 체크박스 확인
+        let chked = userData.schedule.id;
+        console.log(chked);
+        for(i=0; i<obj+1; i++){
+          
+        }
+        //3. 체크박스 체크 넣어주기
+
       }
  
       // 테이블에 변수 요인 넣기 (rowCnt)
       function rowTest() {
         let html = "<td><input type='checkbox' id='오레하_" + rowCnt + "' name='오레하_" + rowCnt + "' value='오레하' onclick='getCheckedCnt(this)'></td>";
         html += "<td><input type='checkbox' id='아르고스_" + rowCnt + "' name='아르고스_" + rowCnt + "' value='아르고스' onclick='getCheckedCnt(this)'></td>";
+        html += "<td><input type='checkbox' id='카양겔" + rowCnt + "' name='카양겔" + rowCnt + "' value='카양겔' onclick='getCheckedCnt(this)'></td>";
+        html += "<td><input type='checkbox' id='볼다이크" + rowCnt + "' name='볼다이크" + rowCnt + "' value='볼다이크' onclick='getCheckedCnt(this)'></td>";
         html += "<td><input type='checkbox' id='발탄_" + rowCnt + "' name='군단장_" + rowCnt + "' value='발탄' onclick='getCheckedCnt(this)'></td>";
         html += "<td><input type='checkbox' id='비아키스_" + rowCnt + "' name='군단장_" + rowCnt + "' value='비아키스' onclick='getCheckedCnt(this)'></td>";
         html += "<td><input type='checkbox' id='쿠크세이튼_" + rowCnt + "' name='군단장_" + rowCnt + "' value='쿠크세이튼' onclick='getCheckedCnt(this)'></td>";
