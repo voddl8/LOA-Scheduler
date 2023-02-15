@@ -2,8 +2,12 @@ const express = require('express');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
+const cors = require('cors');
+require('dotenv').config()
+
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/public', express.static('public'));       // 정적파일 설정
 
@@ -12,11 +16,11 @@ app.set('view engine', 'ejs');
 
 //Mongo DB 연결
 var db;
-MongoClient.connect('mongodb+srv://admin:admin@cluster0.64sx3yx.mongodb.net/test', function(에러, client){
+MongoClient.connect(process.env.DB_URL, function(에러, client){
     if (에러) return console.log(에러);
     
     db = client.db('LOA');
-    app.listen('8080', function(){
+    app.listen(process.env.PORT, function(){
       console.log('listening on 8080')
     });
   })
