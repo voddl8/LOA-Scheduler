@@ -69,13 +69,21 @@
     <div>
       <form action="/main" method="POST">
         <button type="button" value="행추가" onclick="addRow()" class="button_plus"></button>   <!-- 버튼 클릭시 1행 추가 -->
-        <div>
-          <button type="button" class="btn btn-danger mt-2" onclick="save()">저장</button>   <!-- 버튼 클릭시 저장-->
+        <div style="display: inline-block;">
+          <button type="button" class="btn btn-success mt-2 ms-2" onclick="save()">저장</button>   <!-- 버튼 클릭시 저장-->
         </div>
+        <span>
+          <button type="button" class="btn btn-danger mt-2" onclick="resetButton()">전체 해제</button>
+        </span>
       </form>
     </div>
 
     <script>  
+
+      let date = new Date();
+      let krDate = new Intl.DateTimeFormat('kr',{dateStyle:"full", timeStyle:"short"}).format(date);
+      console.log(krDate);
+      console.log(typeof(krDate));
 
       //서버에서 받은 유저 데이터
       let uData1 = '<%- userData %>';
@@ -248,7 +256,24 @@
         }
         
       }
+      
+      function resetButton(){
+        let ck = document.querySelectorAll("input[type='checkbox']");
+        ck.forEach((list)=>{
+          list.checked = false;
+        })
+      }
 
+      // function resetDay(){
+      //   let date = new Date();
+      //   let krDate = new Intl.DateTimeFormat('kr',{dateStyle:"full", timeStyle:"short"}).format(date);
+      //   if(krDate.includes("수요")&&krDate.includes("오전")&&krDate.includes("6:00")){
+      //     console.log("수요일이야")
+      //   }
+  
+
+
+      
 
     </script>
 
