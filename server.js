@@ -122,10 +122,10 @@ app.get('/dbtest', function(요청, 응답){
   });
 
 app.get('/main', 로그인했니, function(요청, 응답){
-    console.log("요청.user : " + JSON.stringify(요청.user.id));
+    //console.log("요청.user : " + JSON.stringify(요청.user.id));
     db.collection('login').find({id: 요청.user.id }).project({_id:0, id:1, role:1, schedule:1}).toArray(function(에러,결과){
-      console.log("받은 userData : " + 결과 + typeof(결과) );
-      console.log("보내는 userData : " + JSON.stringify(결과));
+      //console.log("받은 userData : " + 결과 + typeof(결과) );
+      //console.log("보내는 userData : " + JSON.stringify(결과));
       응답.render('main.ejs', { 
         사용자 : 요청.user, 
         userData : JSON.stringify(결과)
@@ -148,7 +148,7 @@ function 로그인했니(요청, 응답, next){
 app.post('/main', function(요청,응답){
   응답.redirect('/main')
   let data = 요청.body;
-  console.log(data);
+  //console.log(data);
   //console.log("사용자 id 데이터 : " + 요청.user.id);
   db.collection('login').updateOne({id: 요청.user.id}, { $set : {schedule : data}}, function(에러, 결과){
      

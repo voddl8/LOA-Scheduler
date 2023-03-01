@@ -15,6 +15,7 @@
             <img src="../public/images/LostArk_icon.png" alt="Logo" width="40" class="d-inline-block align-text-top">
             LOA Scheduler
           </a>
+          <p style="color: azure;"><%=사용자.id %> 스케줄 </p>
           <form class="d-flex" role="logout">
             <a href="/logout">
               <button class="btn btn-outline-success" type="button">Logout</button>
@@ -23,12 +24,23 @@
         </div>
     </nav>
 
-    <p class="mt-2 ms-3"><%=사용자.id %>의 페이지 </p>
     
-    
+    <div class="ms-3 mt-2">
+      <form>
+        경매 손익 계산기
+        <input type="radio" name="경매" value="4인" checked/> 4인 
+        <input type="radio" name="경매" value="8인"/> 8인
+        <input type="number" id="가격" maxlength="7" style="text-align: right; width: 120px;" onchange="calculate()"/>
+        <span>입찰 추천가 : </span>
+        <span name="추천가" maxlength="7">0 </span>
+        <span>입찰 손익분기 : </span>
+        <span name="손익점" maxlength="7">0 </span>
+        
+      </form>
+    </div>
 
     <!-- 스케쥴 체크 부분 -->
-    <div>
+    <div class="mt-2">
       <form action="/main" method="post">
         <table id="Schedule" class="table table-hover" >
           <thead>
@@ -68,9 +80,7 @@
       //서버에서 받은 유저 데이터
       let uData1 = '<%- userData %>';
       let uData = JSON.parse(uData1);
-      console.log(JSON.stringify(uData) + "\n" +" ");
-      let userData = uData[0];
-      console.log(userData.schedule);      
+      let userData = uData[0];      
 
       // 행 삽입 기능
       let rowCnt = 0;   // tr class 변수    
@@ -122,8 +132,8 @@
         
         //2. 체크된 체크박스 확인 후 체크
         let chked = userData.schedule.id;
-        console.log(chked[0].substr(0));
-        console.log(document.querySelector("#"+chked[0].substr(0)));
+        // console.log(chked[0].substr(0));
+        // console.log(document.querySelector("#"+chked[0].substr(0)));
         //document.querySelector("#"+chked[0].substr(0)).checked = true;
         for(i=0; i<chked.length; i++){
           document.querySelector("#" + chked[i].substr(0)).checked = true;
@@ -223,6 +233,19 @@
           error : function(e){
           }
         })
+        
+      }
+
+      function calculate(){
+        let cost = document.getElementById("가격").value;
+        let event = document.querySelectorAll('input[type="radio"]:checked');
+        if(event[0].value == "4인"){
+          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.7125);
+          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.6483);
+        }else{
+          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.8312);
+          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.7563);
+        }
         
       }
 
