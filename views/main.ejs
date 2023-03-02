@@ -248,11 +248,11 @@
         let cost = document.getElementById("가격").value;
         let event = document.querySelectorAll('input[type="radio"]:checked');
         if(event[0].value == "4인"){
-          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.7125);
-          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.6483);
+          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.7125);
+          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.6483);
         }else{
-          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.8312);
-          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.7563);
+          document.querySelectorAll('span[name="손익점"]')[0].textContent = Math.round(cost*0.8312);
+          document.querySelectorAll('span[name="추천가"]')[0].textContent = Math.round(cost*0.7563);
         }
         
       }
